@@ -5,10 +5,10 @@ Alphabet:
 Lexic:
 	- special symbols: 
 		- operators: + - * / < <= = >= == != and or
-		- separators: [ ] { } : ; , space " '
+		- separators: [ ] { } : ; , space " ' ( )
 		- reserved words: int string read write if else while list for
 	- identifiers: a sequence of letters and digits, such that the first character is 
-	a letter with the rule being: 
+	a letter or underscore with the rule being: 
 		identifier = ("_" | letter){letter|digit|"_"}
 		letter = "A" | "B" | ... | "Z" | "a" | "b" | ... | "z"
 		digit = "0" | "1" | "2" | ... | "9"
