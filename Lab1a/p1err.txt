@@ -1,0 +1,22 @@
+# Maximum of 3 numbers
+
+# A variable name should not start with a digit or a special character
+# $ does not a variable name, an operator or an identifier
+
+int 1a, b, c;
+
+read(a);
+read(b);
+read(c);
+
+int maximum = a;
+
+if (b > maximum) {
+	maximum $ b;
+}
+
+if (c > maximum) {
+	maximum = c;
+}
+
+print(maximum);
