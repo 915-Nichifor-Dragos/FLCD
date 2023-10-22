@@ -8,47 +8,51 @@ Tuple<int, int> p3 = Tuple.Create(-1, -1);
 
 try
 {
-    p1 = symbolTable.AddIdentifier("abc");
+    p1 = symbolTable.AddIdentifier("dragos");
 
-    Console.WriteLine("abc -> " + p1);
-    Console.WriteLine("c -> " + symbolTable.AddIdentifier("c"));
+    Console.WriteLine("dragos -> " + p1);
     Console.WriteLine("a -> " + symbolTable.AddIdentifier("a"));
+    Console.WriteLine("b -> " + symbolTable.AddIdentifier("b"));
+    Console.WriteLine("b -> " + symbolTable.AddIdentifier("c"));
+    Console.WriteLine("ab -> " + symbolTable.AddIdentifier("ab"));
     Console.WriteLine("bc -> " + symbolTable.AddIdentifier("bc"));
-    Console.WriteLine("ba -> " + symbolTable.AddIdentifier("ba"));
+    Console.WriteLine("ac -> " + symbolTable.AddIdentifier("ac"));
 
+    Console.WriteLine("1 -> " + symbolTable.AddIntConstant(1));
     Console.WriteLine("2 -> " + symbolTable.AddIntConstant(2));
     Console.WriteLine("3 -> " + symbolTable.AddIntConstant(3));
+    Console.WriteLine("4 -> " + symbolTable.AddIntConstant(4));
+    Console.WriteLine("5 -> " + symbolTable.AddIntConstant(5));
 
     p2 = symbolTable.AddIntConstant(100);
 
     Console.WriteLine("100 -> " + p2);
     Console.WriteLine("20 -> " + symbolTable.AddIntConstant(20));
-    Console.WriteLine("131 -> " + symbolTable.AddIntConstant(131));
-    Console.WriteLine("49 -> " + symbolTable.AddIntConstant(49));
+    Console.WriteLine("122 -> " + symbolTable.AddIntConstant(122));
+    Console.WriteLine("245 -> " + symbolTable.AddIntConstant(245));
+    Console.WriteLine("368 -> " + symbolTable.AddIntConstant(368));
     Console.WriteLine("96 -> " + symbolTable.AddIntConstant(96));
 
-    Console.WriteLine("string1 -> " + symbolTable.AddStringConstant("string1"));
-    Console.WriteLine("another -> " + symbolTable.AddStringConstant("another"));
-    Console.WriteLine("lab -> " + symbolTable.AddStringConstant("lab"));
-    Console.WriteLine("hello -> " + symbolTable.AddStringConstant("hello"));
+    Console.WriteLine("first-string -> " + symbolTable.AddStringConstant("first-string"));
+    Console.WriteLine("another-string -> " + symbolTable.AddStringConstant("another-string"));
+    Console.WriteLine("lab3 -> " + symbolTable.AddStringConstant("lab3"));
+    Console.WriteLine("hello world -> " + symbolTable.AddStringConstant("hello world"));
 
-    p3 = symbolTable.AddStringConstant("world");
+    p3 = symbolTable.AddStringConstant("car");
 
-    Console.WriteLine("world -> " + p3);
-    Console.WriteLine("abc -> " + symbolTable.AddIdentifier("abc"));
+    Console.WriteLine("car -> " + p3);
+    Console.WriteLine("ac -> " + symbolTable.AddIdentifier("ac"));
 }
 catch (Exception e)
 {
     Console.WriteLine(e.Message);
 }
 
-Console.WriteLine(symbolTable);
-
 try
 {
-    if (!symbolTable.GetPositionIdentifier("abc").Equals(p1))
+    if (!symbolTable.GetPositionIdentifier("dragos").Equals(p1))
     {
-        throw new Exception("abc does not have position" + p1);
+        throw new Exception("dragos does not have position" + p1);
     }
 
     if (!symbolTable.GetPositionIntConstant(100).Equals(p2))
@@ -56,33 +60,19 @@ try
         throw new Exception("100 does not have position" + p2);
     }
 
-    if (!symbolTable.GetPositionStringConstant("world").Equals(p3))
+    if (!symbolTable.GetPositionStringConstant("car").Equals(p3))
     {
-        throw new Exception("world does not have position" + p3);
+        throw new Exception("car does not have position" + p3);
     }
 
-    if (!symbolTable.GetPositionIdentifier("aaaa").Equals(Tuple.Create(-1, -1)))
+    if (!symbolTable.GetPositionIdentifier("m").Equals(Tuple.Create(-1, -1)))
     {
-        throw new Exception("aaaa exists in the table");
+        throw new Exception("m exists in the table");
     }
 
-    if (!symbolTable.GetPositionIntConstant(96).Equals(Tuple.Create(2, 2)))
+    if (!symbolTable.GetPositionIntConstant(368).Equals(Tuple.Create(2, 2)))
     {
-        throw new Exception("96 does not have position (2, 2)");
-    }
-}
-catch (Exception e)
-{
-    Console.WriteLine(e.Message);
-}
-
-try
-{
-    Console.WriteLine("49 -> " + symbolTable.GetPositionIntConstant(49));
-
-    if (!symbolTable.GetPositionIntConstant(49).Equals(Tuple.Create(2, 2)))
-    {
-        throw new Exception("49 does not have position (2, 2)");
+        throw new Exception("368 does not have position (2, 2)");
     }
 }
 catch (Exception e)
@@ -92,11 +82,11 @@ catch (Exception e)
 
 try
 {
-    Console.WriteLine("ba -> " + symbolTable.GetPositionIdentifier("ba"));
+    Console.WriteLine("368 -> " + symbolTable.GetPositionIntConstant(368));
 
-    if (!symbolTable.GetPositionIdentifier("ba").Equals(p1))
+    if (!symbolTable.GetPositionIntConstant(368).Equals(Tuple.Create(122, 2)))
     {
-        throw new Exception("ba does not have position" + p1);
+        throw new Exception("368 does not have position (122, 2)");
     }
 }
 catch (Exception e)
@@ -106,11 +96,11 @@ catch (Exception e)
 
 try
 {
-    Console.WriteLine("22 -> " + symbolTable.GetPositionIntConstant(22));
+    Console.WriteLine("ab -> " + symbolTable.GetPositionIdentifier("ab"));
 
-    if (!symbolTable.GetPositionIntConstant(22).Equals(p2))
+    if (!symbolTable.GetPositionIdentifier("ab").Equals(Tuple.Create(72, 0)))
     {
-        throw new Exception("22 does not have position" + p2);
+        throw new Exception("ab does not have position" + p1);
     }
 }
 catch (Exception e)
@@ -120,14 +110,30 @@ catch (Exception e)
 
 try
 {
-    Console.WriteLine("word -> " + symbolTable.GetPositionStringConstant("word"));
+    Console.WriteLine("20 -> " + symbolTable.GetPositionIntConstant(20));
 
-    if (!symbolTable.GetPositionStringConstant("word").Equals(p3))
+    if (!symbolTable.GetPositionIntConstant(20).Equals(Tuple.Create(20, 0)))
     {
-        throw new Exception("word does not have position" + p3);
+        throw new Exception("20 does not have position" + p2);
     }
 }
 catch (Exception e)
 {
     Console.WriteLine(e.Message);
 }
+
+try
+{
+    Console.WriteLine("hello world -> " + symbolTable.GetPositionStringConstant("hello world"));
+
+    if (!symbolTable.GetPositionStringConstant("hello world").Equals(Tuple.Create(9, 0)))
+    {
+        throw new Exception("hello word does not have position" + p3);
+    }
+}
+catch (Exception e)
+{
+    Console.WriteLine(e.Message);
+}
+
+Console.WriteLine(symbolTable);
