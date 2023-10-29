@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dragos\\Desktop\\FLCD\\Lab3\\lab-3\\lab-3.csproj": {}
+    "C:\\Users\\Dragos\\Desktop\\FLCD\\Lab2\\lab-3\\lab-3.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dragos\\Desktop\\FLCD\\Lab3\\lab-3\\lab-3.csproj": {
+    "C:\\Users\\Dragos\\Desktop\\FLCD\\Lab2\\lab-3\\lab-3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dragos\\Desktop\\FLCD\\Lab3\\lab-3\\lab-3.csproj",
+        "projectUniqueName": "C:\\Users\\Dragos\\Desktop\\FLCD\\Lab2\\lab-3\\lab-3.csproj",
         "projectName": "lab-3",
-        "projectPath": "C:\\Users\\Dragos\\Desktop\\FLCD\\Lab3\\lab-3\\lab-3.csproj",
+        "projectPath": "C:\\Users\\Dragos\\Desktop\\FLCD\\Lab2\\lab-3\\lab-3.csproj",
         "packagesPath": "C:\\Users\\Dragos\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dragos\\Desktop\\FLCD\\Lab3\\lab-3\\obj\\",
+        "outputPath": "C:\\Users\\Dragos\\Desktop\\FLCD\\Lab2\\lab-3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Dragos\\AppData\\Roaming\\NuGet\\NuGet.Config",
