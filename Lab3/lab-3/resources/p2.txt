@@ -9,11 +9,13 @@ if (x < 2 or x > 2 and x % 2 == 0) {
 	isPrime = false;
 }
 
-for (int d = 3 ; d * d <= x ; d +=2) {
+int d = 3;
+
+while (d * d <= x) {
 	if (x % d == 0) {
 		isPrime = false;
-		break;
 	}
+	d = d + 2;
 }
 		
-print(isPrime);
+write(isPrime);

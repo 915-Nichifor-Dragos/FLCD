@@ -91,6 +91,21 @@ public class HashTable<T>
 
     public override string ToString()
     {
-        return "HashTable{" + "items=" + _items + '}';
+        string tableStr = "HashTable {\n";
+
+        for (int index = 0; index < _items.Count; index++)
+        {
+            tableStr += $"[{index}] -> ";
+
+            foreach (T item in _items[index])
+            {
+                tableStr += item + " ";
+            }
+
+            tableStr += "\n";
+        }
+        tableStr += "}";
+
+        return tableStr;
     }
 }

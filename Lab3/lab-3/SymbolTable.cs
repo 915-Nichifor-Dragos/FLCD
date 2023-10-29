@@ -63,10 +63,10 @@ public class SymbolTable
 
     public override string ToString()
     {
-        return "SymbolTable{" +
-               "identifiersHashTable=" + _identifiersHashTable +
-               "\nintConstantsHashTable=" + _intConstantsHashTable +
-               "\nstringConstantsHashTable=" + _stringConstantsHashTable +
+        return "SymbolTable{" + "\n" +
+               "identifiersHashTable=" + _identifiersHashTable + "\n" +
+               "intConstantsHashTable=" + _intConstantsHashTable + "\n" +
+               "stringConstantsHashTable=" + _stringConstantsHashTable + "\n" +
                '}';
     }
 }

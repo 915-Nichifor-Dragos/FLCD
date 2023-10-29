@@ -1,6 +1,6 @@
 # Sum of n numbers
 
-numbers = list();
+numbers = list;
 int x, n;
 int sum = 0, count = 0;
 
@@ -11,11 +11,14 @@ read(n);
 while (count < n) {
 	read(x);
 	numbers.append(x);
-	count ++;
+	count = count + 1;
 }
 
-for (int number : numbers) {
-	sum += number;
+int index = 0;
+
+while (index < numbers.size()) {
+	sum = sum + numbers[i];
+	index = index + 1;
 }
 
-print(sum);
+write(sum);

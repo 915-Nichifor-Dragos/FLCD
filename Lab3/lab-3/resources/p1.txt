@@ -16,4 +16,4 @@ if (c > maximum) {
 	maximum = c;
 }
 
-print(maximum);
+write(maximum);

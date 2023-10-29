@@ -4,9 +4,9 @@ Alphabet:
 	- Decimal digits (0-9) 
 Lexic:
 	- special symbols: 
-		- operators: + - * / < <= = >= == != and or
+		- operators: + - * / % < <= = >= == != and or
 		- separators: [ ] { } : ; , space " ' ( )
-		- reserved words: int string read write if else while list for
+		- reserved words: function int string bool list and or read write if else while true false
 	- identifiers: a sequence of letters and digits, such that the first character is 
 	a letter or underscore with the rule being: 
 		identifier = ("_" | letter){letter|digit|"_"}

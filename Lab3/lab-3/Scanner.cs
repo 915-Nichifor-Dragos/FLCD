@@ -49,17 +49,20 @@ public class Scanner
 
             switch (parts[0])
             {
-                case "program":
+                case "function":
                 case "int":
                 case "string":
-                case "char":
+                case "bool":
+                case "list":
+                case "and":
+                case "or":
                 case "read":
+                case "write":
                 case "if":
                 case "else":
-                case "write":
                 case "while":
-                case "list()":
-                case "const":
+                case "true":
+                case "false":
                     _reservedWords.Add(parts[0]);
                     break;
 
@@ -253,6 +256,14 @@ public class Scanner
             else if (possibleToken.StartsWith(token))
             {
                 _index += token.Length;
+
+                possibleToken = possibleToken.TrimEnd(',', ';');
+
+                if (char.IsDigit(possibleToken[0]) && possibleToken.Length > 1 && char.IsLetter(possibleToken[1]))
+                {
+                    return false;
+                }
+
                 _PIF.Add(new Tuple<string, Tuple<int, int>>(token, new Tuple<int, int>(-1, -1)));
 
                 return true;
@@ -321,7 +332,7 @@ public class Scanner
                 }
             }
 
-            using (StreamWriter stFileWriter = new("ST" + programFileName.Replace(".txt", ".out")))
+            using (StreamWriter stFileWriter = new(Path.Combine("../../../outputs", "ST" + programFileName.Replace(".txt", ".out"))))
             {
                 stFileWriter.Write(_symbolTable.ToString());
             }
