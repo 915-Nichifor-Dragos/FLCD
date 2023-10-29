@@ -1,0 +1,21 @@
+﻿# Sum of n numbers
+
+numbers = list();
+int x, n;
+int sum = 0, count = 0;
+
+write("How many numbers will you sum up?")
+
+read(n);
+
+while (count < n) {
+	read(x);
+	numbers.append(x);
+	count ++;
+}
+
+for (int number : numbers) {
+	sum += number;
+}
+
+print(sum);

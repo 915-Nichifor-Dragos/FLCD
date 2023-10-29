@@ -1,0 +1,19 @@
+﻿# Prime number
+
+int x;
+bool isPrime = true;
+
+read(x);
+
+if (x < 2 or x > 2 and x % 2 == 0) {
+	isPrime = false;
+}
+
+for (int d = 3 ; d * d <= x ; d +=2) {
+	if (x % d == 0) {
+		isPrime = false;
+		break;
+	}
+}
+		
+print(isPrime);
