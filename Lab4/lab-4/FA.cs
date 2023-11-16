@@ -76,7 +76,7 @@ public class FA
                     var transitions = transitionsWithCurlyBrackets.Substring(1, transitionsWithCurlyBrackets.Length - 2).Trim(); // go for -2 to get rid of } at the end
                     var transitionsList = transitions.Split("; ").ToList(); // split the transitions into a list
 
-                    foreach (var transition in transitionsList) 
+                    foreach (var transition in transitionsList)
                     {
                         var transitionWithoutParantheses = transition.Substring(1, transition.Length - 2).Trim(); // go for -2 to get rid of ) at the end
                         var individualValues = transitionWithoutParantheses.Split(", ");
@@ -88,6 +88,13 @@ public class FA
                     throw new Exception("Invalid line in file");
             }
         }
+
+        if (IsDFA() == false)
+        {
+            throw new Exception();
+        }
+
+        Console.Write("Is DFA\n\n");
     }
 
     // helper function to print a list of strings (used for states, output states and alphabet)
@@ -182,4 +189,63 @@ public class FA
 
         return _outputStates.Contains(currentState); // if after processing the state is in the output states, than the word is accepted
     }
+
+    // Check that is DFA
+    private bool IsDFA()
+    {
+        if (_states.Count == 0 || _alphabet.Count == 0 || _outputStates.Count == 0)
+        {
+            return false;
+        }
+
+        if (!_states.Contains(_initialState))
+        {
+            return false;
+        }
+
+        if (!_outputStates.All(_states.Contains))
+        {
+            return false;
+        }
+
+        HashSet<string> seenTransitions = new();
+
+        foreach (Transition transition in _transitions)
+        {
+            string key = $"{transition.From},{transition.Label}";
+
+            if (seenTransitions.Contains(key))
+            {
+                return false;
+            }
+
+            seenTransitions.Add(key);
+        }
+
+        foreach (string state in _states)
+        {
+            HashSet<string> seenLabels = new();
+
+            foreach (Transition transition in _transitions.Where(t => t.From.Equals(state)))
+            {
+                string label = transition.Label;
+
+                if (seenLabels.Contains(label))
+                {
+                    return false;
+                }
+
+                seenLabels.Add(label);
+            }
+
+            if (!seenLabels.All(_alphabet.Contains))
+            {
+                return false;
+            }
+        }
+
+
+        return true;
+    }
+
 }
