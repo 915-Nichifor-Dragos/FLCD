@@ -161,6 +161,41 @@ public class FA
         Console.WriteLine("}");
     }
 
+    public string? GetNextAccepted(string word)
+    {
+        var currentState = _initialState;
+        StringBuilder match = new();
+
+        foreach (char c in word)
+        {
+            string? newState = null;
+
+            foreach (Transition transition in _transitions)
+            {
+                if (transition.From == currentState && transition.Label == c.ToString())
+                {
+                    newState = transition.To;
+                    match.Append(c);
+                    break;
+                }
+            }
+
+            if (newState == null)
+            {
+                if (!_outputStates.Contains(currentState))
+                {
+                    return null;
+                }
+
+                return match.ToString();
+            }
+
+            currentState = newState;
+        }
+
+        return match.ToString();
+    }
+
     // check the if the inserted word is accepted by the FA, if the transitions lead to a state that is in output states
     public bool CheckAccepted(string word) // daca nu gaseste tranzitie in R 1 si state ul ramane R trebuie acceptat?
     {

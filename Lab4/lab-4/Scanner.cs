@@ -14,6 +14,9 @@ public class Scanner
     private SymbolTable _symbolTable; // will keep track of identifiers, string constants and int constants.
     private List<Tuple<string, Tuple<int, int>>> _PIF; // program internal form -> keeps track of tokens.
 
+    private readonly FA _identifierFA;
+    private readonly FA _intConstantFA;
+
     public Scanner()
     {
         _program = string.Empty;
@@ -21,6 +24,9 @@ public class Scanner
         _PIF = new List<Tuple<string, Tuple<int, int>>>();
         _reservedWords = new List<string>();
         _tokens = new List<string>();
+
+        _identifierFA = new FA("../../../resources/identifier.in");
+        _intConstantFA = new FA("../../../resources/int_constants.in");
 
         try
         {
@@ -144,20 +150,14 @@ public class Scanner
     // Treats the case when the current analysed group of characters is a int constant.
     private bool TreatIntConstant()
     {
-        var regexForIntConstant = new Regex("^([+-]?[1-9][0-9]*|0)");
-        var match = regexForIntConstant.Match(_program[_index..]);
+        string? match = _intConstantFA.GetNextAccepted(_program[_index..]);
 
-        if (!match.Success)
+        if (match == null)
         {
             return false;
         }
 
-        if (new Regex("^([+-]?[1-9][0-9]*|0)[a-zA-z_]").Match(_program[_index..]).Success) // checks there are no characters
-        {
-            return false;
-        }
-
-        var intConstant = match.Groups[1].Value;
+        var intConstant = match;
         _index += intConstant.Length;
         Tuple<int, int> position;
 
@@ -189,15 +189,14 @@ public class Scanner
     // Treats the case when the current analysed group of characters is an identifier.
     private bool TreatIdentifier()
     {
-        var regexForIdentifier = new Regex("^([a-zA-Z_][a-zA-Z0-9_]*)");
-        var match = regexForIdentifier.Match(_program[_index..]);
+        string? match = _identifierFA.GetNextAccepted(_program[_index..]);
 
-        if (!match.Success)
+        if (match == null)
         {
             return false;
         }
 
-        var identifier = match.Groups[1].Value;
+        var identifier = match;
 
         if (!CheckIfIdentifierIsValid(identifier)) // checks that identifier is not a reserved word.
         {
