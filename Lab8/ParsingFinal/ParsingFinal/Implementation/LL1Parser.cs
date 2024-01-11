@@ -212,19 +212,21 @@ public class LL1Parser
                 var lhs = grammar.Productions[i].LeftHandSide;
                 var rhs = grammar.Productions[i].RightHandSide;
                 var rhsAsArray = rhs.Split(" ");
-                
+
                 var firstSymbol = rhsAsArray[0];
-                if (grammar.TerminalSymbols.Contains(firstSymbol))
+                if (grammar.TerminalSymbols.Contains(firstSymbol)) // if we have a terminal on the first_position_right_side, then FIRST(right_side) will be the terminal
                 {
                     var key = new Pair<string, string>(lhs, firstSymbol);
                     CheckForConflicts(key);
-                    _parseTable[key] = new Pair<string, int>(rhs, i + 1);
+                    _parseTable[key] = new Pair<string, int>(rhs, i + 1); // add (right_side, index) to (left_side, terminal)
                 }
-                else if (grammar.NonterminalSymbols.Contains(firstSymbol))
+                else if (grammar.NonterminalSymbols.Contains(firstSymbol)) // if we have a nonterminal on the first_position_right_side
+                                                                           // we parse the FIRST(right_side)
                 {
                     foreach (var firstEl in _firstDictionary[firstSymbol])
                     {
-                        if (firstEl == "ε")
+                        if (firstEl == "ε") // if we find epsilon in FIRST(right_side) we add (right_side, index) to ($,$),
+                                            // then parse FOLLOW(left_side) and add (right_side, index) to each terminal from there
                         {
                             var key = new Pair<string, string>(lhs, "$");
                             CheckForConflicts(key);
@@ -235,13 +237,13 @@ public class LL1Parser
                                 {
                                     key = new Pair<string, string>(lhs, "$");
                                     CheckForConflicts(key);
-                                    _parseTable[key] = new Pair<string, int>(rhs, i + 1);
+                                    _parseTable[key] = new Pair<string, int>(rhs, i + 1); // add (right_side, index) to ($,$),
                                 }
                                 else
                                 {
                                     key = new Pair<string, string>(lhs, followEl);
                                     CheckForConflicts(key);
-                                    _parseTable[key] = new Pair<string, int>(rhs, i + 1);
+                                    _parseTable[key] = new Pair<string, int>(rhs, i + 1); // add (right_side, index) to (left_side, terminal)
                                 }
                             }
                         }
@@ -249,11 +251,12 @@ public class LL1Parser
                         {
                             var key = new Pair<string, string>(lhs, firstEl);
                             CheckForConflicts(key);
-                            _parseTable[key] = new Pair<string, int>(rhs, i + 1);
+                            _parseTable[key] = new Pair<string, int>(rhs, i + 1); // if the terminal we find in the FIRST(element) is not epsilon,
+                                                                                  // we add (right_side, index) to (left_side, terminal)
                         }
                     }
                 }
-                else if (firstSymbol == "ε")
+                else if (firstSymbol == "ε") // if the first element on the right side is epsilon, we parse FOLLOW(left_side)
                 {
                     foreach (var followEl in _followDictionary[lhs])
                     {
@@ -261,13 +264,13 @@ public class LL1Parser
                         {
                             var key = new Pair<string, string>(lhs, "$");
                             CheckForConflicts(key);
-                            _parseTable[key] = new Pair<string, int>(rhs, i + 1);
+                            _parseTable[key] = new Pair<string, int>(rhs, i + 1); // add (right_side, index) to ($,$),
                         }
                         else
                         {
                             var key = new Pair<string, string>(lhs, followEl);
                             CheckForConflicts(key);
-                            _parseTable[key] = new Pair<string, int>(rhs, i + 1);
+                            _parseTable[key] = new Pair<string, int>(rhs, i + 1); // add (right_side, index) to (left_side, terminal)
                         }
                     }
                 }
@@ -282,7 +285,7 @@ public class LL1Parser
     private void CheckForConflicts(Pair<string, string> key)
     {
         if (_parseTable[key].First != "err")
-            throw new Exception($"Conflict: ({key.First}, {key.Second})");
+            throw new Exception($"Conflict: ({key.First}, {key.Second})"); // checks if something already exists on the table position
     }
     
     public void PrintParseTable()
@@ -326,25 +329,25 @@ public class LL1Parser
 
     public string ParseSequence(List<string> sequence)
     {
-        Stack<string> alpha = new Stack<string>();
-        Stack<string> beta = new Stack<string>();
-        List<int> pi = new List<int>();
+        Stack<string> alpha = new Stack<string>(); // for the expression
+        Stack<string> beta = new Stack<string>(); // for the nonterminals that we process
+        List<int> pi = new List<int>(); // the indexes
         
         alpha.Push("$");
         for (int i = sequence.Count - 1; i >= 0; i--)
-            alpha.Push(sequence[i]);
+            alpha.Push(sequence[i]); // push the sequence
         
         beta.Push("$");
-        beta.Push(grammar.StartingSymbol);
+        beta.Push(grammar.StartingSymbol); // push the starting symbol
 
         while (!(alpha.Peek() == "$" && beta.Peek() == "$"))
         {
             string alphaPeek = alpha.Peek();
             string betaPeek = beta.Peek();
             var key = new Pair<string, string>(betaPeek, alphaPeek);
-            var value = _parseTable[key];
+            var value = _parseTable[key]; // get the value from the table
 
-            if (value.First == "err")
+            if (value.First == "err") // something went wrong
             {
                 Console.WriteLine("Syntax error for key " + key);
                 Console.WriteLine(alpha);
@@ -352,21 +355,21 @@ public class LL1Parser
                 return "";
             }
 
-            if (value.First == "pop")
+            if (value.First == "pop") // pop from alpha and beta if the peeks are equal
             {
                 alpha.Pop();
                 beta.Pop();
             }
-            else
+            else // pop from beta if the peeks are not equal
             {
-                beta.Pop();
-                if (value.First != "ε")
+                beta.Pop(); 
+                if (value.First != "ε") // if we dont have eps
                 {
-                    string[] val = value.First.Split(" ");
+                    string[] val = value.First.Split(" "); // split the nonterminals
                     for (int i = val.Length - 1; i >= 0; --i)
-                        beta.Push(val[i]);
+                        beta.Push(val[i]); // add them to beta
                 }
-                pi.Add(value.Second);
+                pi.Add(value.Second); // add the index to the number list
             }
         }
 
@@ -374,6 +377,6 @@ public class LL1Parser
         foreach (var el in pi)
             parsingResult += $"{el}";
         
-        return parsingResult;
+        return parsingResult; // generate the sequence
     }
 }
